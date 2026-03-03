@@ -1,7 +1,7 @@
 # Configurations
-title:            The Evidence Encyclopedia
-longtitle:        The Evidence Encyclopedia
-author:           Hyper Fly Guy
+title:            Supply Depot
+longtitle:        Supply Depot
+author:           HyperFlyGuy
 email:            
 description: >
   An Enyclopedia for all types of forensic evidence
@@ -9,7 +9,7 @@ description: >
 version:          1.0
 gitbook_version:  3.2.3
 
-url:              'https://hyperflyguy.github.io/EvidenceEncyclopedia/'
+url:              'https://hyperflyguy.github.io/supply-depot/'
 baseurl:          ''
 rss:              RSS
 
