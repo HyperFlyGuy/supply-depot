@@ -26,6 +26,7 @@
             <a href="{{site.baseurl}}/assets/search.html">Click to Search</a>
         </div>
         <ul class="summary">
+            <!-- Home Link -->
             {% if page.url == "/index.html" or page.url == "/" %}
             <li class="chapter active" data-level="1.1" data-path="{{site.baseurl}}">
             {% else %}
@@ -38,37 +39,71 @@
 
             <li class="divider"></li>
 
-            {% for collection in site.collections %}
-                <!-- <p>{{ collection.label }}</p> -->
-                {% if collection.output %}
-                    {% if collection.label == "posts" %}
-                        {% assign reversed_posts = site[collection.label] | reverse %}
-                    {% else %}
-                        {% assign reversed_posts = site[collection.label] %}
-                    {% endif %}
-
-                    {% for post in reversed_posts %}
-                        {% if page.url == post.url %}
-                        <li class="chapter active" data-level="1.2" data-path="{{site.baseurl}}{{post.url}}">
-                        {% else %}
-                        <li class="chapter" data-level="1.1" data-path="{{site.baseurl}}{{post.url}}">
-                        {% endif %}
-                            <a href="{{site.baseurl}}{{post.url}}" onclick="pageScrollToTop(this)">
-                                {{ post.title | escape }}
-                            </a>
-                            {% if site.toc.enabled %}
-                                {% if page.url == post.url %}
-                                    {% include toc.html html=content h_min=site.toc.h_min h_max=site.toc.h_max %}
-                                {% endif %}
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-
-                    {% if reversed_posts.size > 0 %}
-                        <li class="divider"></li>
-                    {% endif %}
+            <!-- Pages Section -->
+            {% assign pages_collection = site.pages | where_exp: "p", "p.path contains '_pages'" %}
+            {% for pg in pages_collection %}
+                {% if page.url == pg.url %}
+                <li class="chapter active" data-level="2.{{ forloop.index }}" data-path="{{site.baseurl}}{{pg.url}}">
+                {% else %}
+                <li class="chapter" data-level="2.{{ forloop.index }}" data-path="{{site.baseurl}}{{pg.url}}">
                 {% endif %}
+                    <a href="{{site.baseurl}}{{pg.url}}" onclick="pageScrollToTop(this)">
+                        {{ pg.title | escape }}
+                    </a>
+                    {% if site.toc.enabled %}
+                        {% if page.url == pg.url %}
+                            {% include toc.html html=content h_min=site.toc.h_min h_max=site.toc.h_max %}
+                        {% endif %}
+                    {% endif %}
+                </li>
             {% endfor %}
+
+            {% if pages_collection.size > 0 %}
+                <li class="divider"></li>
+            {% endif %}
+
+            <!-- Collections (Categories) Section -->
+            {% assign categories = site.posts | map: "categories" | flatten | uniq | sort %}
+            {% for category in categories %}
+                {% assign category_posts = site.posts | where_exp: "post", "post.categories contains category" | sort: "title" %}
+                {% assign category_display = category | replace: "-", " " %}
+                
+                {% assign is_active = false %}
+                {% for post in category_posts %}
+                    {% if page.url == post.url %}
+                        {% assign is_active = true %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+                
+                <li class="chapter{% if is_active %} active expanded{% endif %}" data-level="3.{{ forloop.index }}" data-path="">
+                    <span class="category-header" style="cursor: pointer; display: block; padding: 10px 15px 10px 30px; color: #364149; font-weight: 600;">
+                        {{ category_display }}
+                    </span>
+                    <ul class="articles">
+                        {% for post in category_posts %}
+                            {% if page.url == post.url %}
+                            <li class="chapter active" data-level="3.{{ forloop.index }}.{{ forloop.index }}" data-path="{{site.baseurl}}{{post.url}}">
+                            {% else %}
+                            <li class="chapter" data-level="3.{{ forloop.index }}.{{ forloop.index }}" data-path="{{site.baseurl}}{{post.url}}">
+                            {% endif %}
+                                <a href="{{site.baseurl}}{{post.url}}" onclick="pageScrollToTop(this)">
+                                    {{ post.title | escape }}
+                                </a>
+                                {% if site.toc.enabled %}
+                                    {% if page.url == post.url %}
+                                        {% include toc.html html=content h_min=site.toc.h_min h_max=site.toc.h_max %}
+                                    {% endif %}
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+
+            {% if categories.size > 0 %}
+                <li class="divider"></li>
+            {% endif %}
         </ul>
     </nav>
 </div>

@@ -1,6 +1,6 @@
 ---
 layout: post
-permalink: supply-depot/categories/
+permalink: /categories/
 title: Evidence Index
 ---
 
