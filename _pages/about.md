@@ -7,7 +7,6 @@ layout: post
 ---
 
 **Connor Spangler**  
-Jacksonville, FL∙ 724.833.3671  
 spangler.connor55@gmail.com  ∙ [github.com/HyperFlyGuy](http://github.com/HyperFlyGuy)  
 linkedin.com/in/connor-spangler-345963156/
 
@@ -22,7 +21,7 @@ Trusted technical individual contributor and Threat Hunter with 6+ years of expe
 **Functional:** Technical individual contributor, Documentation, training, oral and written communication, executive and client communication, analysis, complex problem-solving, cross-team collaboration
 
 **PROFESSIONAL EXPERIENCE**  
-**Threat Hunter – Red Canary 	                    			                   August 2024 – Present**
+**Threat Hunter – XXX 	                    			                   August 2024 – Present**
 
 * Design, architect, and deploy a cloud-native threat hunting platform in AWS used by multiple teams, enabling standardized hunts, shared telemetry, and scalable analysis workflows   
 * Serve as technical owner for hunting platform architecture, data flows, and deployment patterns, reducing bespoke tooling and improving cross-team consistency  
@@ -67,4 +66,5 @@ GIAC Enterprise Incident Responder (**GEIR**)
 **CompTIA:** Security+; CYSA+	          
 **Microsoft:** Azure Fundamentals (**AZ900**); Security Operations Analyst (**SC200**)  
 **Bachelor of Science in Cyber Security**, Jacksonville University		                             **December 2019**
+
 
