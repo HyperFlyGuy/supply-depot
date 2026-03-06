@@ -50,7 +50,7 @@ Trusted technical individual contributor and Threat Hunter with 6+ years of expe
 
 
 **CYBER PROJECTS & ENGAGEMENT**  
-**Personal Blog:** [https://hyperflyguy.github.io/EvidenceEncyclopedia/](https://hyperflyguy.github.io/EvidenceEncyclopedia/) (Revamp is currently in progress)  
+**Personal Blog:** [https://hyperflyguy.github.io/supply-depot/](https://hyperflyguy.github.io/EvidenceEncyclopedia/]) (Revamp is currently in progress)  
 **Boot.dev:** https://www.boot.dev/u/hyperflyguy
 
 * Completed courses related to python, go, functional programming, data structures, HTTP clients and servers, object oriented programming

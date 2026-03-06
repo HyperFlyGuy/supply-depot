@@ -2,17 +2,20 @@
     <script type="text/javascript">
         // Fixes the page links scroll problem on both desktop and mobile browsers
         function pageScrollToTop(element) {
-            // both mobile and non-mobile
             $('div.body-inner').animate({scrollTop: 0});
             $(element).parent().find('li>ul>li').removeClass('active');
-            return true;  // propagate
+            return true;
         }
-        // Fixes the anchor links scroll problem on mobile browsers
         function mobilePageScrollToAnchor(element) {
             $(element).closest('li.chapter').find('ul>li').removeClass('active');
             $(element).parent().addClass('active');
             if ($(document).width() <= 1240) {
-                $('div.body-inner').animate({scrollTop: $($(element).attr('href')).get(0).offsetTop});
+                let target = $($(element).attr('href'));
+                if (target.length) {
+                    $('div.body-inner').animate({
+                        scrollTop: target.get(0).offsetTop,
+                    });
+                }
             }
             return true;
         }
@@ -26,49 +29,191 @@
             <a href="{{site.baseurl}}/assets/search.html">Click to Search</a>
         </div>
         <ul class="summary">
+            <!-- Home Link -->
             {% if page.url == "/index.html" or page.url == "/" %}
-            <li class="chapter active" data-level="1.1" data-path="{{site.baseurl}}">
+            <li class="chapter active" data-level="1.0" data-path="{{site.baseurl}}">
             {% else %}
-            <li class="chapter" data-level="1.1" data-path="{{site.baseurl}}">
+            <li class="chapter" data-level="1.0" data-path="{{site.baseurl}}">
             {% endif %}
                 <a href="{{site.baseurl}}/" onclick="pageScrollToTop(this)">
                     {{ site.title | escape }}
                 </a>
+                {% if site.toc.enabled %}
+                    {% if site.toc.enabled_index %}
+                        {% include toc.html html=content h_min=site.toc.h_min h_max=site.toc.h_max %}
+                    {% endif %}
+                {% endif %}
             </li>
 
             <li class="divider"></li>
 
-            {% for collection in site.collections %}
-                <!-- <p>{{ collection.label }}</p> -->
-                {% if collection.output %}
-                    {% if collection.label == "posts" %}
-                        {% assign reversed_posts = site[collection.label] | reverse %}
-                    {% else %}
-                        {% assign reversed_posts = site[collection.label] %}
+            <!-- About Page (Standalone) -->
+            {% assign about_page = site.pages | where_exp: "p", "p.path contains '_pages/about'" | first %}
+            {% if about_page %}
+                {% if page.url == about_page.url %}
+                <li class="chapter active" data-level="1.1" data-path="{{site.baseurl}}{{about_page.url}}">
+                {% else %}
+                <li class="chapter" data-level="1.1" data-path="{{site.baseurl}}{{about_page.url}}">
+                {% endif %}
+                    <a href="{{site.baseurl}}{{about_page.url}}" onclick="pageScrollToTop(this)">
+                        {{ about_page.title | escape }}
+                    </a>
+                </li>
+            {% endif %}
+
+            <li class="divider"></li>
+
+            <!-- ==================== FORENSICS SECTION ==================== -->
+            {% assign forensics_categories = "Application-Execution,Account-Usage,Cloud-Storage,Network-Activity-and-Physical-Location,System-Information" | split: "," %}
+            {% assign timeline_page = site.pages | where_exp: "p", "p.path contains 'Timeline_Like_a_Boss'" | first %}
+            {% assign evidence_page = site.pages | where_exp: "p", "p.path contains 'EvidenceIndex'" | first %}
+            
+            {% assign forensics_active = false %}
+            {% if timeline_page and page.url == timeline_page.url %}{% assign forensics_active = true %}{% endif %}
+            {% if evidence_page and page.url == evidence_page.url %}{% assign forensics_active = true %}{% endif %}
+            {% for cat in forensics_categories %}
+                {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains cat" %}
+                {% for post in cat_posts %}
+                    {% if page.url == post.url %}{% assign forensics_active = true %}{% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            <li class="chapter{% if forensics_active %} active expanded{% endif %}" data-level="2.0" data-path="">
+                <span class="section-header" style="cursor: pointer; display: block; padding: 10px 15px 10px 30px; color: #364149; font-weight: 700; text-transform: uppercase; font-size: 0.9em;">
+                    Forensics
+                </span>
+                <ul class="articles">
+                    <!-- Timeline Page -->
+                    {% if timeline_page %}
+                        {% if page.url == timeline_page.url %}
+                        <li class="chapter active" data-level="2.0.1" data-path="{{site.baseurl}}{{timeline_page.url}}">
+                        {% else %}
+                        <li class="chapter" data-level="2.0.1" data-path="{{site.baseurl}}{{timeline_page.url}}">
+                        {% endif %}
+                            <a href="{{site.baseurl}}{{timeline_page.url}}" onclick="pageScrollToTop(this)">
+                                {{ timeline_page.title | escape }}
+                            </a>
+                        </li>
                     {% endif %}
 
-                    {% for post in reversed_posts %}
-                        {% if page.url == post.url %}
-                        <li class="chapter active" data-level="1.2" data-path="{{site.baseurl}}{{post.url}}">
+                    <!-- Evidence Index Page -->
+                    {% if evidence_page %}
+                        {% if page.url == evidence_page.url %}
+                        <li class="chapter active" data-level="2.0.2" data-path="{{site.baseurl}}{{evidence_page.url}}">
                         {% else %}
-                        <li class="chapter" data-level="1.1" data-path="{{site.baseurl}}{{post.url}}">
+                        <li class="chapter" data-level="2.0.2" data-path="{{site.baseurl}}{{evidence_page.url}}">
+                        {% endif %}
+                            <a href="{{site.baseurl}}{{evidence_page.url}}" onclick="pageScrollToTop(this)">
+                                {{ evidence_page.title | escape }}
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <!-- Forensics Subcategories -->
+                    {% for category in forensics_categories %}
+                        {% assign category_posts = site.posts | where_exp: "post", "post.categories contains category" | sort: "title" %}
+                        {% if category_posts.size > 0 %}
+                            {% assign category_display = category | replace: "-", " " %}
+                            
+                            {% assign cat_is_active = false %}
+                            {% for post in category_posts %}
+                                {% if page.url == post.url %}
+                                    {% assign cat_is_active = true %}
+                                    {% break %}
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <li class="chapter{% if cat_is_active %} active expanded{% endif %}" data-level="2.{{ forloop.index }}" data-path="">
+                                <span class="category-header" style="cursor: pointer; display: block; padding: 10px 15px 10px 45px; color: #364149; font-weight: 600;">
+                                    {{ category_display }}
+                                </span>
+                                <ul class="articles">
+                                    {% for post in category_posts %}
+                                        {% if page.url == post.url %}
+                                        <li class="chapter active" data-level="2.{{ forloop.index }}.{{ forloop.index }}" data-path="{{site.baseurl}}{{post.url}}">
+                                        {% else %}
+                                        <li class="chapter" data-level="2.{{ forloop.index }}.{{ forloop.index }}" data-path="{{site.baseurl}}{{post.url}}">
+                                        {% endif %}
+                                            <a href="{{site.baseurl}}{{post.url}}" onclick="pageScrollToTop(this)">
+                                                {{ post.title | escape }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+
+            <li class="divider"></li>
+
+            <!-- ==================== THREAT HUNTING SECTION ==================== -->
+            {% assign th_posts = site.posts | where_exp: "post", "post.categories contains 'Threat-Hunting'" | sort: "title" %}
+            
+            {% assign th_active = false %}
+            {% for post in th_posts %}
+                {% if page.url == post.url %}{% assign th_active = true %}{% endif %}
+            {% endfor %}
+
+            <li class="chapter{% if th_active %} active expanded{% endif %}" data-level="3.0" data-path="">
+                <span class="section-header" style="cursor: pointer; display: block; padding: 10px 15px 10px 30px; color: #364149; font-weight: 700; text-transform: uppercase; font-size: 0.9em;">
+                    Threat Hunting
+                </span>
+                <ul class="articles">
+                    {% for post in th_posts %}
+                        {% if page.url == post.url %}
+                        <li class="chapter active" data-level="3.{{ forloop.index }}" data-path="{{site.baseurl}}{{post.url}}">
+                        {% else %}
+                        <li class="chapter" data-level="3.{{ forloop.index }}" data-path="{{site.baseurl}}{{post.url}}">
                         {% endif %}
                             <a href="{{site.baseurl}}{{post.url}}" onclick="pageScrollToTop(this)">
                                 {{ post.title | escape }}
                             </a>
-                            {% if site.toc.enabled %}
-                                {% if page.url == post.url %}
-                                    {% include toc.html html=content h_min=site.toc.h_min h_max=site.toc.h_max %}
-                                {% endif %}
-                            {% endif %}
                         </li>
                     {% endfor %}
-
-                    {% if reversed_posts.size > 0 %}
-                        <li class="divider"></li>
+                    {% if th_posts.size == 0 %}
+                        <li class="chapter" data-level="3.1">
+                            <span style="padding: 10px 15px 10px 45px; color: #999; font-style: italic; display: block;">No posts yet</span>
+                        </li>
                     {% endif %}
-                {% endif %}
+                </ul>
+            </li>
+
+            <li class="divider"></li>
+
+            <!-- ==================== ADVERSARIES SECTION ==================== -->
+            {% assign adv_posts = site.posts | where_exp: "post", "post.categories contains 'Adversaries'" | sort: "title" %}
+            
+            {% assign adv_active = false %}
+            {% for post in adv_posts %}
+                {% if page.url == post.url %}{% assign adv_active = true %}{% endif %}
             {% endfor %}
+
+            <li class="chapter{% if adv_active %} active expanded{% endif %}" data-level="4.0" data-path="">
+                <span class="section-header" style="cursor: pointer; display: block; padding: 10px 15px 10px 30px; color: #364149; font-weight: 700; text-transform: uppercase; font-size: 0.9em;">
+                    Adversaries
+                </span>
+                <ul class="articles">
+                    {% for post in adv_posts %}
+                        {% if page.url == post.url %}
+                        <li class="chapter active" data-level="4.{{ forloop.index }}" data-path="{{site.baseurl}}{{post.url}}">
+                        {% else %}
+                        <li class="chapter" data-level="4.{{ forloop.index }}" data-path="{{site.baseurl}}{{post.url}}">
+                        {% endif %}
+                            <a href="{{site.baseurl}}{{post.url}}" onclick="pageScrollToTop(this)">
+                                {{ post.title | escape }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    {% if adv_posts.size == 0 %}
+                        <li class="chapter" data-level="4.1">
+                            <span style="padding: 10px 15px 10px 45px; color: #999; font-style: italic; display: block;">No posts yet</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+
         </ul>
     </nav>
 </div>
