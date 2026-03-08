@@ -1,7 +1,7 @@
 ---
 title: "Business Email Compromise: Rule Creation Hunt"
 layout: post
-categories: Complete
+categories: Threat-Hunting
 ---
 
 ## Overview
