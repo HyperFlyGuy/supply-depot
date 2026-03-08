@@ -1,5 +1,5 @@
 ---
-title: "Cloud Session Hijacking"
+title: "Cloud Session Hijacking Hunt"
 layout: post
 categories: Threat-Hunting
 ---

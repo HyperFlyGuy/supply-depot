@@ -1,5 +1,5 @@
 ---
-title: "Cloud Session Hijacking"
+title: "CIDC Pipeline Abuse Hunt"
 layout: post
 categories: Threat-Hunting
 ---

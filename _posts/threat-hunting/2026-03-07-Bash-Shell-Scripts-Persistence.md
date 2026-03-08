@@ -1,5 +1,5 @@
 ---
-title: "Cloud Session Hijacking"
+title: "Bash Shell Script Persistence Hunt"
 layout: post
 categories: Threat-Hunting
 ---
