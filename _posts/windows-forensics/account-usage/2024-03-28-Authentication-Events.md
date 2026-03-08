@@ -6,7 +6,7 @@ categories: Account-Usage
 ---
 ## Location and Format
 
-The goto resource for analyzing authentication events in a Windows system are the Windows Security Event Logs. These event logs are located at **"C:\Windows\System32\winevt\logs\Security.evtx"**
+The go to resource for analyzing authentication events in a Windows system are the Windows Security Event Logs. These event logs are located at **"C:\Windows\System32\winevt\logs\Security.evtx"**
 
 ## Purpose
 
