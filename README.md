@@ -12,3 +12,7 @@ There are a few sections across the site. As I write this there is a Forensics s
 - Threat Hunting: Last but not least there is a Threat Hunting section where I give ideas for Threat hunts along with a general rundown of what to expect if you hunt for this activity. I do leave some psuedo-code in there but there is some room for improvement with that, my hope is to just convey the logic of the hunt. You will occasionally see blank hunts this just means that I am currently working on filling out the details, but wanted to present the idea in case anyone had ideas.
 
 Please enjoy the content!
+
+# Currently Complete Hunts:
+- BEC: Email Rule Creation
+- Malicious OAUTH Application Consent
