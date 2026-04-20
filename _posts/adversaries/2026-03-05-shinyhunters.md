@@ -6,6 +6,8 @@ categories: Adversaries
 
 # ShinyHunters Analysis
 
+**AI Generated and Reviewed by Human**
+
 ## Overview:
 
 ShinyHunters (also known as ShinyCorp) is an international, financially-motivated cyber threat group that first emerged in 2020, quickly gaining notoriety for orchestrating high-profile data breaches and extortion campaigns against major global brands (Source: Dark Web Profile_ ShinyHunters.txt, Section: "Who is ShinyHunters?", Lines 34-41). Despite the playful, Pokémon-inspired name suggesting a community of harmless enthusiasts, ShinyHunters has become deeply entrenched in cybercrime, specializing in the theft and sale of vast databases on dark web forums (Source: Dark Web Profile_ ShinyHunters.txt, Section: "Who is ShinyHunters?", Lines 38-52).
