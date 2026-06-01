@@ -1,5 +1,5 @@
 ---
-title: "Business Email Compromise: Rule Creation Hunt"
+title: "K365 Infrastructure Hunt"
 layout: post
 categories: Threat-Hunting
 ---
@@ -44,7 +44,7 @@ This search left us with five (5) total results and three (3) unique IP addresse
 
 ### IOC's 
 
-```
+```boss.securehubcloud.com
 Domains:
 boss.securehubcloud[.]com
 duemineral[.]uk
